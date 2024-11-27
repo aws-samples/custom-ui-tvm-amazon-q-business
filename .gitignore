@@ -12,7 +12,6 @@ custom_service
 custom_service/*
 sample_tickets
 sample_tickets/*
-aim333-module-2.ipynb
 aim333-module-2.zip
 
 # CDK asset staging directory
