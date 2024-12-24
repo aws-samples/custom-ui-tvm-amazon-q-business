@@ -242,7 +242,7 @@ class TVMOidcIssuerStack extends Stack {
             'qbusiness:PutFeedback',
             'qbusiness:DeleteConversation'
           ],
-          resources: [`arn:aws:qbusiness:us-east-1:${this.account}:application/*`]
+          resources: [`arn:aws:qbusiness:${this.region}:${this.account}:application/*`]
         }),
         new iam.PolicyStatement({
           sid: 'QBusinessSetContextPermissions',
