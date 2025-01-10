@@ -38,6 +38,78 @@ MyOidcIssuerStack.QBizAssumeRoleARN = arn:aws:iam::XXXXXXXX:role/q-biz-custom-oi
 9. Setup a Q Business App, Select "AWS IAM Identity Provider" (**Note**: Uncheck "Web Experience" from "Outcome" when creating the Q Business App), select "OpenID Connect (OIDC)" provider type for authentication and select the above created Identity Provider from the drop down, in "Client ID" enter the Audience value from the stack output above `AudienceOutput` (also found in `cdk-outputs.json` file that captures the output of stack deployment, or in your Cloudformation stack deployment output).
 10. Setup your Q Business App following the rest of the steps by adding data sources etc.
 
+### Call the API
+
+If you want to call the Amazon Q Business API, you need to first retrieve a token which is then used to assume a role before making API calls. We've included a Python script that handles this authentication flow - you just need to provide the following parameters:
+
+| Parameter     | Description                                                                |
+|---------------|----------------------------------------------------------------------------|
+| client_id     | fetch from `/oidc/client_id` in Systems manager parameter store.           |
+| client_secret | fetch from `/oidc/client_secret` in Systems manager parameter store.       |
+| issuer_url    | Fetch output parameter `IssuerUrlOutput` from the Cloudformation stack.    |
+| email         | Any email you want.                                                        |
+| role_arn      | Fetch output parameter  `QBizAssumeRoleARN` from the Cloudformation stack. |
+| region        | AWS Region                                                                 |
+
+```python
+import requests
+import boto3
+
+# set the following env vars
+client_id=""
+client_secret=""
+issuer_url=""
+email=""
+role_arn=""
+region=""
+
+def get_id_token():
+    auth_string = f"{client_id}:{client_secret}"
+    auth_bytes = auth_string.encode('utf-8')
+    auth = base64.b64encode(auth_bytes).decode('utf-8')
+        
+    response = requests.post(
+            f"{issuer_url}/token",
+            headers={
+                'Authorization': f'Basic {auth}',
+                'Content-Type': 'application/json'
+            },
+            json={'email': email}
+        )
+        
+    return response.json()['id_token']
+
+
+sts = boto3.client('sts')
+id_token = get_id_token()       # from previous step
+
+# Assume role with web identity
+response = sts.assume_role_with_web_identity(
+            RoleArn=role_arn,
+            RoleSessionName=f"session-{email}",
+            WebIdentityToken=id_token
+        )
+        
+# Extract credentials from response
+credentials = response['Credentials']
+
+qbiz_client = boto3.client(
+            'qbusiness',
+            region_name=region,
+            aws_access_key_id=credentials['AccessKeyId'],
+            aws_secret_access_key=credentials['SecretAccessKey'],
+            aws_session_token=credentials['SessionToken']
+        )
+
+# Then start making Amazon Q Business API calls
+chat_params = {
+    "applicationId": "xxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx",          # Amazon Q Business Application ID
+    "userMessage": "Can you give me an overview of what Caas is?" # The user's query
+}
+response = qbiz_client.chat_sync(**chat_params)
+print(response)
+```
+
 ### Delete the TVM stack
 
 To delete the TVM stack-
