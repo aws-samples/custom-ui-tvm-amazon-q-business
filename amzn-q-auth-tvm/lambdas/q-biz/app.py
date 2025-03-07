@@ -158,9 +158,9 @@ def lambda_handler(event, context):
                     "document": {
                         "fieldMappings": [
                           {
-                            "indexFieldName": "document_content",
-                            "indexFieldType": "STRING",
-                            "dataSourceFieldName": "content"
+                            "indexFieldName": "created_at",
+                            "indexFieldType": "DATE",
+                            "dataSourceFieldName": "_created_at"
                           }
                         ]
                     }
