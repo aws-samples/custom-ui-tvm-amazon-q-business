@@ -158,12 +158,15 @@ def lambda_handler(event, context):
                     "document": {
                         "fieldMappings": [
                           {
-                            "indexFieldName": "document_content",
+                            "indexFieldName": "s3_document_id",
                             "indexFieldType": "STRING",
-                            "dataSourceFieldName": "content"
+                            "dataSourceFieldName": "s3_document_id"
                           }
                         ]
                     }
+                },
+                "additionalProperties": {
+                    "maxFileSizeInMegaBytes": "50"
                 }
             }
             s3_data_source_response = qbusiness_client.create_data_source(
