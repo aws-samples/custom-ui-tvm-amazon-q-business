@@ -30,6 +30,7 @@ import "./index.css";
  * @property {boolean} [hideAvatars=false] - Whether to hide user/assistant avatars.
  * @property {Object|null} [attributeFilter=null] - Optional filter for attributes.
  * @property {Object} [theme] - The theme configuration object for the UI.
+ * @property {string} [mode] - The Amazon Q Business application mode authenticated or anonymous.
  * @property {function(Object): void} onChatMessage - Callback function when a message is received from Q Business.
  * @property {function(): void} onClose - Callback function when the chat panel is closed.
 
