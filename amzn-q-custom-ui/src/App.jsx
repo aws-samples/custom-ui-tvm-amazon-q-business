@@ -83,6 +83,7 @@ function App() {
             showHistory={true}
             showNewChatBtn={true}
             hideAvatars={false}
+            mode='anonymous'
             cannedQuestions={[
               "What is Coffee-as-a-Service?", 
               "What are the pricing plans available for CaaS?", 

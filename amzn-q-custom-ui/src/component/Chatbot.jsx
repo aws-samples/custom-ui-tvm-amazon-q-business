@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, useCallback } from 'react';
 import { Redo2Icon, Ellipsis, CornerLeftUp, WifiOff } from 'lucide-react';
 import { Offline, Online } from "react-detect-offline";
+import PropTypes from 'prop-types';
 import defaultLogo from '../assets/amazonq.png';
 import userAvatar from '../assets/user.png';
 import Loader from './elements/Loader';
@@ -17,6 +18,7 @@ import useMessages from './hooks/useMessages';
 import { useGlobalConfig } from './providers/GlobalConfigContext';
 import { insertSupTags } from './utils/citationHelper';
 import { useTemplateUtils, defaultTemplate, template } from './hooks/useTemplateUtils';
+
 
 const Chatbot = ({ 
   title, 
@@ -38,6 +40,7 @@ const Chatbot = ({
   hideAvatars=false,
   attributeFilter=null,
   theme,
+  mode='authenticated',  // 'authenticated' | 'anonymous'
   onChatMessage=null,
   onClose=null }) => {
 
@@ -84,7 +87,8 @@ const Chatbot = ({
                             region: awsRegion, 
                             email, 
                             roleArn: iamRoleArn, 
-                            appId: qBusinessAppId});
+                            appId: qBusinessAppId,
+                            mode});
     const {isLoadingMessages, 
         messageList, 
         messagesError, 
@@ -416,13 +420,14 @@ const Chatbot = ({
                         }
                         {
                             (showHistory || showNewChatBtn || onClose) &&
-                            <ChatHistoryMenu 
+                            <ChatHistoryMenu                             
                                 onSelectMessage={handleConvoSelect} 
                                 onDelete={onConversationDel}                            
                                 onNewChat={resetChat}
                                 conversationId={conversationID}
                                 showNewChatBtn={showNewChatBtn}
                                 showMenuBtn={showHistory}
+                                mode={mode}
                                 onClose={() => console.log('close')}/>                        
                         }
                         <div className='text-xs mt-2 text-gray-400 w-full text-center'>
@@ -444,6 +449,10 @@ const Chatbot = ({
             </div>   
         </div>         
     );
+};
+
+Chatbot.propTypes = {
+    mode: PropTypes.oneOf(['authenticated', 'anonymous'])
 };
 
 export default Chatbot;

@@ -1,7 +1,7 @@
 # Amazon Q Business Token Vending Machine and QUI
 
 > [!IMPORTANT] 
-> This solution requires using Amazon Q Business with [IAM Identity Provider](https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/create-application-iam.html), and does not support IAM Identity Center (IDC) based authentication setup. For calling Amazon Q Business APIs while using IDC, check [this GitHub repository](https://github.com/aws-samples/custom-web-experience-with-amazon-q-business).
+> This solution requires using Amazon Q Business with [IAM Identity Provider](https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/create-application-iam.html) or Amazon Q Business in Anonymous mode, and does not support IAM Identity Center (IDC) based authentication setup. For calling Amazon Q Business APIs while using IDC, check [this GitHub repository](https://github.com/aws-samples/custom-web-experience-with-amazon-q-business).
 
 > [!TIP]
 > 💡 We highly recommend starting with [the wiki](https://github.com/aws-samples/custom-ui-tvm-amazon-q-business/wiki) before deploying.

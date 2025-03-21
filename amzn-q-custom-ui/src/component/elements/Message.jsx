@@ -140,7 +140,7 @@ const Message = ({
                         </code>
                     )
                 },
-                sup({ node, children, ...props }) {                    
+                sup({ node, children, ...props }) {       
                     if(user === 'SYSTEM'){
                         const citationNumber = children[0];
                         const endOffset = props['data-endoffset'];                    

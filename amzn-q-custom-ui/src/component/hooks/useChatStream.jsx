@@ -28,7 +28,7 @@ const generateCanonicalQueryString = (url, query) => {
       return conon_url;
   };
 
-const useChatStream = ({ issuer, appId, roleArn, region, email }) => {
+const useChatStream = ({ issuer, appId, roleArn, region, email, mode }) => {
   // const { data: credentials, isLoading: loadingClient } = useQbizCredentials(issuer, email, region, roleArn);
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -118,7 +118,7 @@ const useChatStream = ({ issuer, appId, roleArn, region, email }) => {
       // BUFFER_SIZE = 25; // More real-time, might be less smooth (ideal) 
       // BUFFER_SIZE = 10;  // More smooth, less real-time
 
-      const BUFFER_SIZE = 20; 
+      const BUFFER_SIZE = 35; 
 
       while (messageQueueRef.current.length > 0) {
           const event = messageQueueRef.current.shift();
@@ -239,7 +239,7 @@ const useChatStream = ({ issuer, appId, roleArn, region, email }) => {
       ws.onopen = async() => {        
         const configurationPayload = {
           chatMode: 'RETRIEVAL_MODE',
-          chatModeConfiguration: {},
+          ...(mode === 'authenticated' && { chatModeConfiguration: {} }),
           ...(chatPayload["attributeFilter"] && {attributeFilter: chatPayload["attributeFilter"]})
         };
         /**

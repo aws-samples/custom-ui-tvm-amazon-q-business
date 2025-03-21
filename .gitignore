@@ -47,3 +47,4 @@ IAM_Role.txt
 call_chat_sync.py
 testing.ipynb
 .env
+.env*
