@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 /**Firefox struggles with real time streaming so we will use batching */
 const isFirefox = typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent);
-const isNullOrUndefined = (value) => value === null || value === undefined;
 
 const generateCanonicalQueryString = (url, query) => {
       const conon_url = url;
@@ -40,7 +39,10 @@ const useChatStream = ({ issuer, appId, roleArn, region, email, mode }) => {
   const isProcessingRef = useRef(false);
 
   const SERVICE = 'qbusiness';
-  const WEBSOCKET_ENDPOINT = `wss://qbusiness.${region}.api.aws:8443/chat`;
+  const HOSTNAME = `qbusiness-websocket.${region}.api.aws`;
+  const PORT = 443;
+  const PROTOCOL = 'wss';
+  const ENDPOINT = '/chat';
 
   const closeConnection = useCallback(() => {
         if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -71,16 +73,16 @@ const useChatStream = ({ issuer, appId, roleArn, region, email, mode }) => {
 
     const request = new HttpRequest({
       method: 'GET',
-      protocol: 'wss',
-      hostname: `qbusiness.${region}.api.aws`,
-      port: 8443,
-      path: '/chat',
+      protocol: PROTOCOL,
+      hostname: HOSTNAME,
+      port: 443,
+      path: ENDPOINT,
       query: { 'chat-input': chatInput },
-      headers: { host: `qbusiness.${region}.api.aws:8443` },
+      headers: { host: HOSTNAME },
     });
 
     const signedRequest = await sigV4.presign(request, { expiresIn: 900 });
-    const url = new URL(`${WEBSOCKET_ENDPOINT}`);
+    const url = new URL(`${PROTOCOL}://${HOSTNAME}:${PORT}${ENDPOINT}`);
     return {
             signedUrl: generateCanonicalQueryString(url, signedRequest.query),
             signature: signedRequest.query['X-Amz-Signature'],

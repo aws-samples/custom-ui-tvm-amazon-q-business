@@ -85,7 +85,7 @@ function App() {
             hideAvatars={false}
             mode='anonymous'
             cannedQuestions={[
-              "What is Coffee-as-a-Service?", 
+              "What is Coffee-as-a-Service?",
               "What are the pricing plans available for CaaS?", 
               "What APIs are available in CaaS?",
               "Give me sample Python Code snippet on how to use Coffee-Menu API."]}            

@@ -310,9 +310,9 @@ const Chatbot = ({
                                 </div>
                                 {
                                     (cannedQuestions) &&
-                                    <Online>
+                                    // <Online>
                                         <CannedQuestions questions={cannedQuestions} onClick={handleQuestionClick}/>
-                                    </Online>
+                                    // </Online>
                                 }
                         </div>
                         ) : (
@@ -370,7 +370,7 @@ const Chatbot = ({
                     </div>
                 }
                 {/* Online only */}
-                <Online>
+                {/* <Online> */}
                     <div className="pb-4 pl-4 pr-4 pt-0 rounded-xl"
                         style={{backgroundColor: globalStyles["bgColor"]}}>
                         {
@@ -438,14 +438,14 @@ const Chatbot = ({
                         }            
                         </div>
                     </div>  
-                </Online>        
-                <Offline>
+                {/* </Online>         */}
+                {/* <Offline>
                     <div className="px-4 py-10 rounded-xl flex flex-row justify-center align-middle"
                             style={{backgroundColor: globalStyles["bgColor"]}}>
                         <WifiOff size={24} className='mr-4' style={{color: globalStyles["inputTextColor"]}}/>
                         <div className='text-lg' style={{color: globalStyles["inputTextColor"]}}>You seem offline.</div>
                     </div>
-                </Offline>
+                </Offline> */}
             </div>   
         </div>         
     );
