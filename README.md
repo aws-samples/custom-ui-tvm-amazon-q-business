@@ -1,3 +1,5 @@
+## This repo supported Amazon Q Business. It is no longer maintained — see Amazon Quick instead.
+
 # Amazon Q Business Token Vending Machine and QUI
 
 > [!IMPORTANT] 
