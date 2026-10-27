@@ -1,3 +1,31 @@
+> [!CAUTION]
+> **Security notice: do not run this sample as deployed.**
+>
+> The `/token` endpoint in this sample does not reliably authenticate callers. A request with an
+> allow-listed `Origin` header is accepted without checking client credentials. `Origin` is set by the
+> caller and can be spoofed. The default allow-list in `allow-list-domains.json`
+> (`http://localhost:5174` and two placeholder domains) is public and is written to SSM on every deployment.
+> `/token` then signs an OIDC token for whatever email address is in the request body. That token can be
+> used to assume the Amazon Q Business role, which can act on any Q Business application in the account,
+> as that user.
+>
+> The TVM was designed to be called **only from a trusted backend** that has already authenticated the
+> user. It was designed for a backend call between an application and the TVM.
+>
+> **If you have deployed this stack:**
+> 1. **Remove it** by running `cdk destroy` from the `amzn-q-auth-tvm` directory. This is the recommended option.
+> 2. If you can't remove it yet, **restrict the API Gateway** right away, for example with a private
+>    endpoint or a resource policy limited to your backend's VPC or IP range. Also remove the
+>    Origin-based Allow branch in `lambdas/lambda-authorizer/app.py` so that every call needs valid
+>    client credentials.
+> 3. **Rotate `/oidc/client_secret`** in SSM Parameter Store. It is stored as a plain String parameter.
+> 4. **Review CloudTrail** for `AssumeRoleWithWebIdentity` calls on `tvm-qbiz-custom-oidc-role` with
+>    unexpected `Email` session tags, and for Amazon Q Business activity you don't recognize.
+>
+> This repository is archived and will not receive a fix.
+
+
+
 ## This repo supported Amazon Q Business. It is no longer maintained — see Amazon Quick instead.
 
 # Amazon Q Business Token Vending Machine and QUI
